@@ -1,0 +1,15 @@
+/build/
+/.dart_tool/
+/.claude/
+android/app/build.gradle
+*.log
+
+# Ignore Flutter/Dart temporary files
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+
+# Ignore iOS temporary files
+ios/Flutter/ephemeral/
