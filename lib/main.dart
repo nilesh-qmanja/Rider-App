@@ -8,8 +8,10 @@ import 'package:flutter_web_plugins/url_strategy.dart';
 import 'auth/custom_auth/custom_auth_user_provider.dart';
 
 import 'backend/firebase/firebase_config.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
+import 'index.dart';
 
 
 
@@ -79,7 +81,7 @@ class _MyAppState extends State<MyApp> {
       _router.routerDelegate.currentConfiguration.matches
           .map((e) => getRoute(e))
           .toList();
-  late Stream<DipakshiriderAuthUser> userStream;
+  late Stream<QmanjaRiderAuthUser> userStream;
 
   @override
   void initState() {
@@ -87,7 +89,7 @@ class _MyAppState extends State<MyApp> {
 
     _appStateNotifier = AppStateNotifier.instance;
     _router = createRouter(_appStateNotifier);
-    userStream = dipakshiriderAuthUserStream()
+    userStream = qmanjaRiderAuthUserStream()
       ..listen((user) {
         _appStateNotifier.update(user);
       });
@@ -110,7 +112,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'dipakshirider',
+      title: 'Qmanja Rider',
       scrollBehavior: MyAppScrollBehavior(),
       localizationsDelegates: [
         FFLocalizationsDelegate(),
@@ -130,6 +132,89 @@ class _MyAppState extends State<MyApp> {
       ),
       themeMode: _themeMode,
       routerConfig: _router,
+    );
+  }
+}
+
+class NavBarPage extends StatefulWidget {
+  NavBarPage({
+    Key? key,
+    this.initialPage,
+    this.page,
+    this.disableResizeToAvoidBottomInset = false,
+  }) : super(key: key);
+
+  final String? initialPage;
+  final Widget? page;
+  final bool disableResizeToAvoidBottomInset;
+
+  @override
+  _NavBarPageState createState() => _NavBarPageState();
+}
+
+/// This is the private State class that goes with NavBarPage.
+class _NavBarPageState extends State<NavBarPage> {
+  String _currentPageName = 'home';
+  late Widget? _currentPage;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentPageName = widget.initialPage ?? _currentPageName;
+    _currentPage = widget.page;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final tabs = {
+      'home': HomeWidget(),
+      'orderHistory': OrderHistoryWidget(),
+      'Profile': ProfileWidget(),
+    };
+    final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
+
+    return Scaffold(
+      resizeToAvoidBottomInset: !widget.disableResizeToAvoidBottomInset,
+      body: _currentPage ?? tabs[_currentPageName],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: (i) => safeSetState(() {
+          _currentPage = null;
+          _currentPageName = tabs.keys.toList()[i];
+        }),
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        selectedItemColor: FlutterFlowTheme.of(context).primary,
+        unselectedItemColor: FlutterFlowTheme.of(context).secondaryText,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.event_note_outlined,
+              size: 24.0,
+            ),
+            label: 'Active Orders',
+            tooltip: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.history,
+              size: 24.0,
+            ),
+            label: 'Order History',
+            tooltip: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.tag_faces,
+              size: 24.0,
+            ),
+            label: 'Profile',
+            tooltip: '',
+          )
+        ],
+      ),
     );
   }
 }

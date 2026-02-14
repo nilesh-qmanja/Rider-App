@@ -1,4 +1,4 @@
-# dipakshirider
+# Qmanja Rider
 
 A new Flutter project.
 

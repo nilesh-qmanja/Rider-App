@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>dipakshirider</string>
+	<string>Qmanja Rider</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 
@@ -37,10 +37,10 @@
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>dipakshirider.com</string>
+        <string>qmanjarider.com</string>
         <key>CFBundleURLSchemes</key>
         <array>
-        <string>dipakshirider</string>
+        <string>qmanjarider</string>
         </array>
         </dict>
     </array>

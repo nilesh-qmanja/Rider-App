@@ -7,3 +7,4 @@ export '/pages/acceptorder/acceptorder_widget.dart' show AcceptorderWidget;
 export '/location/location_widget.dart' show LocationWidget;
 export '/splash_screen/splash_screen_widget.dart' show SplashScreenWidget;
 export '/profile/profile_widget.dart' show ProfileWidget;
+export '/profile_page/profile_page_widget.dart' show ProfilePageWidget;

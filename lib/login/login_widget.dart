@@ -58,65 +58,69 @@ class _LoginWidgetState extends State<LoginWidget> {
         body: SafeArea(
           top: true,
           child: Container(
-            height: double.infinity,
             decoration: BoxDecoration(
-              color: Colors.white,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: Image.asset(
+                  'assets/images/fozzo_home_page_menu_background.png',
+                ).image,
+              ),
             ),
-            child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Image.asset(
-                              'assets/images/logo-removebg-preview.png',
-                              width: 250.0,
-                              height: 200.0,
-                              fit: BoxFit.contain,
-                              alignment: Alignment(0.0, 0.0),
-                            ),
-                          ),
-                        ],
-                      ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Image.asset(
+                      'assets/images/logo-removebg-preview.png',
+                      width: 250.0,
+                      height: 200.0,
+                      fit: BoxFit.contain,
+                      alignment: Alignment(0.0, 0.0),
                     ),
                   ),
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(15.0, 71.0, 0.0, 0.0),
-                    child: Text(
-                      'Verification of phone number',
-                      style:
-                          FlutterFlowTheme.of(context).headlineSmall.override(
-                                font: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w500,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .headlineSmall
-                                      .fontStyle,
-                                ),
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.w500,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .headlineSmall
-                                    .fontStyle,
-                              ),
-                    ),
+                  Text(
+                    'Login ',
+                    style: FlutterFlowTheme.of(context).headlineSmall.override(
+                          font: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FlutterFlowTheme.of(context)
+                                .headlineSmall
+                                .fontStyle,
+                          ),
+                          letterSpacing: 0.0,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FlutterFlowTheme.of(context)
+                              .headlineSmall
+                              .fontStyle,
+                        ),
+                  ),
+                  Text(
+                    'Enter Your mobile number to login.',
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          font: GoogleFonts.inter(
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .fontStyle,
+                          ),
+                          color: FlutterFlowTheme.of(context).secondaryText,
+                          letterSpacing: 0.0,
+                          fontWeight: FontWeight.w500,
+                          fontStyle:
+                              FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                        ),
                   ),
                   Form(
                     key: _model.formKey,
                     autovalidateMode: AutovalidateMode.disabled,
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(15.0, 30.0, 15.0, 0.0),
+                          EdgeInsetsDirectional.fromSTEB(15.0, 15.0, 15.0, 0.0),
                       child: Container(
                         width: 350.0,
                         child: TextFormField(
@@ -229,67 +233,48 @@ class _LoginWidgetState extends State<LoginWidget> {
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
-                    child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(
-                          20.0, 190.0, 20.0, 0.0),
-                      child: FFButtonWidget(
-                        onPressed: () async {
-                          if (_model.formKey.currentState == null ||
-                              !_model.formKey.currentState!.validate()) {
-                            return;
-                          }
-                          _model.phoneLogin = await PhoneLoginCall.call(
-                            phone: _model.mobileTextController.text,
-                          );
+                  Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 0.0),
+                    child: FFButtonWidget(
+                      onPressed: () async {
+                        if (_model.formKey.currentState == null ||
+                            !_model.formKey.currentState!.validate()) {
+                          return;
+                        }
+                        _model.phoneLogin = await PhoneLoginCall.call(
+                          phone: _model.mobileTextController.text,
+                        );
 
-                          if ((_model.phoneLogin?.succeeded ?? true)) {
-                            FFAppState().Phone =
-                                _model.mobileTextController.text;
-                            FFAppState().phonestatus = PhoneLoginCall.status(
-                              (_model.phoneLogin?.jsonBody ?? ''),
-                            )!;
-                            FFAppState().phonemessage = PhoneLoginCall.message(
-                              (_model.phoneLogin?.jsonBody ?? ''),
-                            )!;
-                            FFAppState().phoneOtp = PhoneLoginCall.resetotp(
-                              (_model.phoneLogin?.jsonBody ?? ''),
-                            )!;
-                            safeSetState(() {});
-                            if ((FFAppState().phonestatus == 200) &&
-                                (FFAppState().phonemessage ==
-                                    'OTP sent on your registered mobile number')) {
-                              context.pushNamed(
-                                LoginotpWidget.routeName,
-                                queryParameters: {
-                                  'phone': serializeParam(
-                                    _model.mobileTextController.text,
-                                    ParamType.String,
-                                  ),
-                                }.withoutNulls,
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Login Failed',
-                                    style: TextStyle(
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                    ),
-                                  ),
-                                  duration: Duration(milliseconds: 4000),
-                                  backgroundColor:
-                                      FlutterFlowTheme.of(context).secondary,
+                        if ((_model.phoneLogin?.succeeded ?? true)) {
+                          FFAppState().Phone = _model.mobileTextController.text;
+                          FFAppState().phonestatus = PhoneLoginCall.status(
+                            (_model.phoneLogin?.jsonBody ?? ''),
+                          )!;
+                          FFAppState().phonemessage = PhoneLoginCall.message(
+                            (_model.phoneLogin?.jsonBody ?? ''),
+                          )!;
+                          FFAppState().phoneOtp = PhoneLoginCall.resetotp(
+                            (_model.phoneLogin?.jsonBody ?? ''),
+                          )!;
+                          safeSetState(() {});
+                          if ((FFAppState().phonestatus == 200) &&
+                              (FFAppState().phonemessage ==
+                                  'OTP sent on your registered mobile number')) {
+                            context.pushNamed(
+                              LoginotpWidget.routeName,
+                              queryParameters: {
+                                'phone': serializeParam(
+                                  _model.mobileTextController.text,
+                                  ParamType.String,
                                 ),
-                              );
-                            }
+                              }.withoutNulls,
+                            );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  'Error',
+                                  'Login Failed',
                                   style: TextStyle(
                                     color: FlutterFlowTheme.of(context)
                                         .primaryText,
@@ -301,30 +286,37 @@ class _LoginWidgetState extends State<LoginWidget> {
                               ),
                             );
                           }
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Error',
+                                style: TextStyle(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                ),
+                              ),
+                              duration: Duration(milliseconds: 4000),
+                              backgroundColor:
+                                  FlutterFlowTheme.of(context).secondary,
+                            ),
+                          );
+                        }
 
-                          safeSetState(() {});
-                        },
-                        text: 'Send OTP',
-                        options: FFButtonOptions(
-                          width: double.infinity,
-                          height: 40.0,
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              16.0, 0.0, 16.0, 0.0),
-                          iconPadding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 0.0),
-                          color: Color(0xFFFC6324),
-                          textStyle:
-                              FlutterFlowTheme.of(context).titleSmall.override(
-                                    font: GoogleFonts.interTight(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .titleSmall
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .titleSmall
-                                          .fontStyle,
-                                    ),
-                                    color: Colors.white,
-                                    letterSpacing: 0.0,
+                        safeSetState(() {});
+                      },
+                      text: 'Send OTP',
+                      options: FFButtonOptions(
+                        width: double.infinity,
+                        height: 40.0,
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            16.0, 0.0, 16.0, 0.0),
+                        iconPadding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                        color: Color(0xFFFC6324),
+                        textStyle:
+                            FlutterFlowTheme.of(context).titleSmall.override(
+                                  font: GoogleFonts.interTight(
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .titleSmall
                                         .fontWeight,
@@ -332,10 +324,28 @@ class _LoginWidgetState extends State<LoginWidget> {
                                         .titleSmall
                                         .fontStyle,
                                   ),
-                          elevation: 0.0,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
+                                  color: Colors.white,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .titleSmall
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .titleSmall
+                                      .fontStyle,
+                                ),
+                        elevation: 0.0,
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                    child: Image.asset(
+                      'assets/images/WhatsApp_Image_2025-06-24_at_11.33.13_a2ee67d5-removebg-preview.png',
+                      width: 319.3,
+                      height: 265.1,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ],

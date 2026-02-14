@@ -18,10 +18,10 @@ class AcceptorderModel extends FlutterFlowModel<AcceptorderWidget> {
   LatLng? locationcustomer1;
   // Stores action output result for [Backend Call - API (UpdateOrderStatus)] action in Button widget.
   ApiCallResponse? updateorderstatus;
-  // Stores action output result for [Backend Call - API (RemoveRider)] action in Button widget.
-  ApiCallResponse? apiremove;
   // Stores action output result for [Backend Call - API (SetOrderCompleteStatus)] action in Button widget.
   ApiCallResponse? setOrderCompleteStatusResult;
+  // Stores action output result for [Backend Call - API (RemoveRider)] action in Button widget.
+  ApiCallResponse? apiremove;
 
   @override
   void initState(BuildContext context) {}

@@ -2,17 +2,17 @@ import 'package:rxdart/rxdart.dart';
 
 import 'custom_auth_manager.dart';
 
-class DipakshiriderAuthUser {
-  DipakshiriderAuthUser({required this.loggedIn, this.uid});
+class QmanjaRiderAuthUser {
+  QmanjaRiderAuthUser({required this.loggedIn, this.uid});
 
   bool loggedIn;
   String? uid;
 }
 
 /// Generates a stream of the authenticated user.
-BehaviorSubject<DipakshiriderAuthUser> dipakshiriderAuthUserSubject =
-    BehaviorSubject.seeded(DipakshiriderAuthUser(loggedIn: false));
-Stream<DipakshiriderAuthUser> dipakshiriderAuthUserStream() =>
-    dipakshiriderAuthUserSubject
+BehaviorSubject<QmanjaRiderAuthUser> qmanjaRiderAuthUserSubject =
+    BehaviorSubject.seeded(QmanjaRiderAuthUser(loggedIn: false));
+Stream<QmanjaRiderAuthUser> qmanjaRiderAuthUserStream() =>
+    qmanjaRiderAuthUserSubject
         .asBroadcastStream()
         .map((user) => currentUser = user);

@@ -28,13 +28,13 @@ class CustomAuthManager {
     uid = null;
 
     // Update the current user.
-    dipakshiriderAuthUserSubject.add(
-      DipakshiriderAuthUser(loggedIn: false),
+    qmanjaRiderAuthUserSubject.add(
+      QmanjaRiderAuthUser(loggedIn: false),
     );
     persistAuthData();
   }
 
-  Future<DipakshiriderAuthUser?> signIn({
+  Future<QmanjaRiderAuthUser?> signIn({
     String? authenticationToken,
     String? refreshToken,
     DateTime? tokenExpiration,
@@ -66,7 +66,7 @@ class CustomAuthManager {
     );
   }
 
-  DipakshiriderAuthUser? _updateCurrentUser({
+  QmanjaRiderAuthUser? _updateCurrentUser({
     String? authenticationToken,
     String? refreshToken,
     DateTime? tokenExpiration,
@@ -78,11 +78,11 @@ class CustomAuthManager {
     this.uid = authUid;
 
     // Update the current user stream.
-    final updatedUser = DipakshiriderAuthUser(
+    final updatedUser = QmanjaRiderAuthUser(
       loggedIn: true,
       uid: authUid,
     );
-    dipakshiriderAuthUserSubject.add(updatedUser);
+    qmanjaRiderAuthUserSubject.add(updatedUser);
     persistAuthData();
     return updatedUser;
   }
@@ -109,11 +109,11 @@ class CustomAuthManager {
     final authTokenExists = authenticationToken != null;
     final tokenExpired =
         tokenExpiration != null && tokenExpiration!.isBefore(DateTime.now());
-    final updatedUser = DipakshiriderAuthUser(
+    final updatedUser = QmanjaRiderAuthUser(
       loggedIn: authTokenExists && !tokenExpired,
       uid: uid,
     );
-    dipakshiriderAuthUserSubject.add(updatedUser);
+    qmanjaRiderAuthUserSubject.add(updatedUser);
   }
 
   void persistAuthData() {
@@ -131,5 +131,5 @@ class CustomAuthManager {
   }
 }
 
-DipakshiriderAuthUser? currentUser;
+QmanjaRiderAuthUser? currentUser;
 bool get loggedIn => currentUser?.loggedIn ?? false;

@@ -7,6 +7,7 @@ import '/backend/schema/structs/index.dart';
 
 import '/auth/custom_auth/custom_auth_user_provider.dart';
 
+import '/main.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
@@ -25,8 +26,8 @@ class AppStateNotifier extends ChangeNotifier {
   static AppStateNotifier? _instance;
   static AppStateNotifier get instance => _instance ??= AppStateNotifier._();
 
-  DipakshiriderAuthUser? initialUser;
-  DipakshiriderAuthUser? user;
+  QmanjaRiderAuthUser? initialUser;
+  QmanjaRiderAuthUser? user;
   bool showSplashImage = true;
   String? _redirectLocation;
 
@@ -51,7 +52,7 @@ class AppStateNotifier extends ChangeNotifier {
   /// to perform subsequent actions (such as navigation) afterwards.
   void updateNotifyOnAuthChange(bool notify) => notifyOnAuthChange = notify;
 
-  void update(DipakshiriderAuthUser newUser) {
+  void update(QmanjaRiderAuthUser newUser) {
     final shouldUpdate =
         user?.uid == null || newUser.uid == null || user?.uid != newUser.uid;
     initialUser ??= newUser;
@@ -78,13 +79,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       refreshListenable: appStateNotifier,
       navigatorKey: appNavigatorKey,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? HomeWidget() : SplashScreenWidget(),
+          appStateNotifier.loggedIn ? NavBarPage() : SplashScreenWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? HomeWidget() : SplashScreenWidget(),
+              appStateNotifier.loggedIn ? NavBarPage() : SplashScreenWidget(),
         ),
         FFRoute(
           name: LoginWidget.routeName,
@@ -102,29 +103,37 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-          name: OrderHistoryWidget.routeName,
-          path: OrderHistoryWidget.routePath,
-          builder: (context, params) => OrderHistoryWidget(
-            orderId: params.getParam(
-              'orderId',
-              ParamType.int,
-            ),
-            date: params.getParam(
-              'date',
-              ParamType.DateTime,
-            ),
-          ),
-        ),
+            name: OrderHistoryWidget.routeName,
+            path: OrderHistoryWidget.routePath,
+            builder: (context, params) => params.isEmpty
+                ? NavBarPage(initialPage: 'orderHistory')
+                : NavBarPage(
+                    initialPage: 'orderHistory',
+                    page: OrderHistoryWidget(
+                      orderId: params.getParam(
+                        'orderId',
+                        ParamType.int,
+                      ),
+                      date: params.getParam(
+                        'date',
+                        ParamType.DateTime,
+                      ),
+                    ),
+                  )),
         FFRoute(
-          name: HomeWidget.routeName,
-          path: HomeWidget.routePath,
-          builder: (context, params) => HomeWidget(
-            fromSplashScreen: params.getParam(
-              'fromSplashScreen',
-              ParamType.bool,
-            ),
-          ),
-        ),
+            name: HomeWidget.routeName,
+            path: HomeWidget.routePath,
+            builder: (context, params) => params.isEmpty
+                ? NavBarPage(initialPage: 'home')
+                : NavBarPage(
+                    initialPage: 'home',
+                    page: HomeWidget(
+                      fromSplashScreen: params.getParam(
+                        'fromSplashScreen',
+                        ParamType.bool,
+                      ),
+                    ),
+                  )),
         FFRoute(
           name: AcceptorderWidget.routeName,
           path: AcceptorderWidget.routePath,
@@ -148,9 +157,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => SplashScreenWidget(),
         ),
         FFRoute(
-          name: ProfileWidget.routeName,
-          path: ProfileWidget.routePath,
-          builder: (context, params) => ProfileWidget(),
+            name: ProfileWidget.routeName,
+            path: ProfileWidget.routePath,
+            builder: (context, params) => params.isEmpty
+                ? NavBarPage(initialPage: 'Profile')
+                : NavBarPage(
+                    initialPage: 'Profile',
+                    page: ProfileWidget(),
+                  )),
+        FFRoute(
+          name: ProfilePageWidget.routeName,
+          path: ProfilePageWidget.routePath,
+          builder: (context, params) => ProfilePageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

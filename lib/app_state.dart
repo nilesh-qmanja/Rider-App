@@ -53,6 +53,9 @@ class FFAppState extends ChangeNotifier {
               prefs.getInt('ff_tokenupdatedtime')!)
           : _tokenupdatedtime;
     });
+    _safeInit(() {
+      _FCMToken = prefs.getString('ff_FCMToken') ?? _FCMToken;
+    });
   }
 
   void update(VoidCallback callback) {
@@ -668,6 +671,13 @@ class FFAppState extends ChangeNotifier {
 
   void insertAtIndexInAllActiveOrders(int index, ActiveOrderStruct value) {
     AllActiveOrders.insert(index, value);
+  }
+
+  String _FCMToken = '';
+  String get FCMToken => _FCMToken;
+  set FCMToken(String value) {
+    _FCMToken = value;
+    prefs.setString('ff_FCMToken', value);
   }
 }
 
